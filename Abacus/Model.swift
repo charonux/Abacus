@@ -8,12 +8,14 @@
 
 import Foundation
 struct AbacusModel {
-    private var accumulator: Double?
+    var accumulator: Double?
     private enum Operation {
+        case unaryOperation((Double) -> Double)
         case binaryOperation((Double,Double) -> Double)
         case equal
     }
     private var operation:[String:Operation] = [
+        "-": Operation.unaryOperation({-$0}),
         "+": Operation.binaryOperation({$0 + $1}),
         "−": Operation.binaryOperation({$0 - $1}),
         "÷": Operation.binaryOperation({$0 / $1}),
@@ -45,6 +47,10 @@ struct AbacusModel {
     mutating func performOperation(_ symbol: String){
         if let operationType = operation[symbol] {
             switch operationType {
+            case .unaryOperation(let function):
+                if accumulator != nil {
+                    accumulator = function(accumulator!)
+                }
             case .binaryOperation(let function):
                 if accumulator != nil {
                     pendingBinaryOperation = PendingBinaryOperation(firstOperand: accumulator!, function: function)

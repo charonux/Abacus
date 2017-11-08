@@ -50,7 +50,9 @@ class ViewController: UIViewController {
         if let operation = sender.titleLabel?.text {
             switch operation {
             case "C":
-                operand = 0
+                //operand = 0
+                abacusModel.accumulator = nil
+                display.text = "0"
             default:
                 abacusModel.performOperation(operation)
                 if abacusModel.result != nil {
