@@ -17,7 +17,12 @@ class ViewController: UIViewController {
             return Double(display.text!)!
         }
         set {
+            let temp = String(newValue)
+            if temp.hasSuffix(".0") {
+                return display.text = String(Int(newValue))
+            } else {
             return display.text = String(newValue)
+            }
         }
     }
     override func viewDidLoad() {
